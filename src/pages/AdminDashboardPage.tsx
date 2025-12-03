@@ -285,7 +285,7 @@ export function AdminDashboardPage() {
                     <CardTitle>Schools on record</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ScrollArea className="max-h-64">
+                    <ScrollArea className="h-64">
                       <div className="space-y-3">
                         {schoolCount === 0 && (
                           <p className="text-sm text-slate-400">No schools registered yet.</p>
