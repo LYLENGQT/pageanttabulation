@@ -38,18 +38,27 @@ export function JudgeScoringPage() {
   const categoriesQuery = useQuery({
     queryKey: ['categories'],
     queryFn: fetchCategories,
-    staleTime: 5 * 60 * 1000,
-    onSuccess: (categories) => setCategories(categories)
+    staleTime: 5 * 60 * 1000
   });
 
   const contestantsQuery = useQuery({
     queryKey: ['contestants', judge?.division],
     queryFn: () => fetchContestants(judge?.division ?? 'male'),
-    enabled: Boolean(judge?.division),
-    onSuccess: (contestants) => {
-      setContestants(contestants);
-    }
+    enabled: Boolean(judge?.division)
   });
+
+  // Update store when data changes (React Query v5 pattern)
+  useEffect(() => {
+    if (categoriesQuery.data) {
+      setCategories(categoriesQuery.data);
+    }
+  }, [categoriesQuery.data, setCategories]);
+
+  useEffect(() => {
+    if (contestantsQuery.data) {
+      setContestants(contestantsQuery.data);
+    }
+  }, [contestantsQuery.data, setContestants]);
 
   const criteriaQuery = useQuery({
     queryKey: ['criteria', selectedCategoryId],
@@ -91,15 +100,15 @@ export function JudgeScoringPage() {
 
   const categories: Category[] =
     categoriesQuery.data ??
-    CATEGORY_CONFIG.map((cat, idx) => ({
+    (CATEGORY_CONFIG.map((cat, idx) => ({
       id: cat.slug,
       slug: cat.slug,
       label: cat.label,
       sort_order: idx,
       weight: cat.weight
-    }));
+    })) as Category[]);
 
-  const contestants: Contestant[] = contestantsQuery.data ?? [];
+  const contestants: Contestant[] = contestantsQuery.data ?? ([] as Contestant[]);
 
   const currentCategory = categories.find((cat) => cat.id === selectedCategoryId);
 
