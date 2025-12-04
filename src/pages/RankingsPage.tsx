@@ -12,9 +12,9 @@ import type { CategorySlug } from '../types/scoring';
 import { CATEGORY_CONFIG } from '../constants/scoring';
 
 const highlightClassForRank = (rank: number) => {
-  if (rank === 1) return 'bg-amber-500/10 text-amber-200';
-  if (rank === 2) return 'bg-slate-300/10 text-slate-100';
-  if (rank === 3) return 'bg-orange-500/10 text-orange-200';
+  if (rank === 1) return 'bg-amber-100 text-amber-900 dark:bg-amber-500/10 dark:text-amber-200';
+  if (rank === 2) return 'bg-slate-200 text-slate-900 dark:bg-slate-300/10 dark:text-slate-100';
+  if (rank === 3) return 'bg-orange-100 text-orange-900 dark:bg-orange-500/10 dark:text-orange-200';
   return '';
 };
 
@@ -72,7 +72,7 @@ export function RankingsPage() {
   if (!roleChecked) {
     return (
       <AppShell title="Live Rankings" showAdminLink={false}>
-        <p className="text-sm text-slate-400 px-6 py-8">Loading access…</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 px-6 py-8">Loading access…</p>
       </AppShell>
     );
   }
@@ -93,9 +93,9 @@ export function RankingsPage() {
       }
     >
       <div className="space-y-8">
-        <section className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
-          <h2 className="text-lg font-semibold">Overall Ranking (Ranking Method)</h2>
-          <p className="mt-1 text-xs text-slate-400">
+        <section className="rounded-2xl border border-slate-200 bg-white/50 p-6 dark:border-slate-800 dark:bg-slate-900/60">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Overall Ranking (Ranking Method)</h2>
+          <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
             Lowest total points wins. Rank 1 = 1 pt, Rank 2 = 2 pts, etc.
           </p>
           <div className="mt-4 grid gap-6 md:grid-cols-2">
@@ -105,30 +105,30 @@ export function RankingsPage() {
             ].map(({ title, rows }) => (
               <div
                 key={title}
-                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                className="rounded-xl border border-slate-200 bg-slate-50/50 p-4 dark:border-slate-800 dark:bg-slate-950/60"
               >
-                <h3 className="text-sm font-semibold">{title}</h3>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white">{title}</h3>
                 <div className="mt-3 overflow-x-auto">
-                  <table className="min-w-full divide-y divide-slate-800 text-xs">
+                  <table className="min-w-full divide-y divide-slate-200 text-xs dark:divide-slate-800">
                     <thead>
-                      <tr className="text-left text-[11px] uppercase tracking-wide text-slate-400">
+                      <tr className="text-left text-[11px] uppercase tracking-wide text-slate-600 dark:text-slate-400">
                         <th className="py-2">Place</th>
                         <th className="py-2">Contestant</th>
                         <th className="py-2 text-center">Total Points</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800">
+                    <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                       {rows && rows.length > 0 ? (
                         rows.map((row) => {
                           const cls = highlightClassForRank(row.final_placement);
                           return (
                             <tr key={row.contestant_id} className={cls}>
-                              <td className="py-2 text-sm">{row.final_placement}</td>
-                              <td className="py-2">
+                              <td className="py-2 text-sm text-slate-900 dark:text-white">{row.final_placement}</td>
+                              <td className="py-2 text-slate-900 dark:text-white">
                                 #{row.number?.toString().padStart(2, '0')}{' '}
                                 {row.full_name}
                               </td>
-                              <td className="py-2 text-center">
+                              <td className="py-2 text-center text-slate-900 dark:text-white">
                                 {row.total_points?.toFixed(2)}
                               </td>
                             </tr>
@@ -136,7 +136,7 @@ export function RankingsPage() {
                         })
                       ) : (
                         <tr>
-                          <td className="py-2 text-xs" colSpan={3}>
+                          <td className="py-2 text-xs text-slate-600 dark:text-slate-400" colSpan={3}>
                             No records found.
                           </td>
                         </tr>
@@ -149,11 +149,11 @@ export function RankingsPage() {
           </div>
         </section>
 
-        <section className="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
+        <section className="space-y-4 rounded-2xl border border-slate-200 bg-white/50 p-6 dark:border-slate-800 dark:bg-slate-900/60">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-lg font-semibold">Per-Category Rankings</h2>
-              <p className="text-xs text-slate-400">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Per-Category Rankings</h2>
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 Scores are ranked within each category and division. Top 3 are highlighted.
               </p>
             </div>
@@ -164,8 +164,8 @@ export function RankingsPage() {
                   onClick={() => setSelectedCategorySlug(cat.slug)}
                   className={`rounded-full border px-3 py-1 text-xs transition ${
                     selectedCategorySlug === cat.slug
-                      ? 'border-slate-100 bg-slate-100/10 text-white'
-                      : 'border-slate-700 text-slate-300 hover:border-slate-400'
+                      ? 'border-slate-900 bg-slate-900 text-white dark:border-slate-100 dark:bg-slate-100/10 dark:text-white'
+                      : 'border-slate-300 text-slate-700 hover:border-slate-500 hover:text-slate-900 dark:border-slate-700 dark:text-slate-300 dark:hover:border-slate-400'
                   }`}
                 >
                   {cat.label}
@@ -181,30 +181,30 @@ export function RankingsPage() {
             ].map(({ title, rows }) => (
               <div
                 key={title}
-                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                className="rounded-xl border border-slate-200 bg-slate-50/50 p-4 dark:border-slate-800 dark:bg-slate-950/60"
               >
-                <h3 className="text-sm font-semibold">{title}</h3>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white">{title}</h3>
                 <div className="mt-3 overflow-x-auto">
-                  <table className="min-w-full divide-y divide-slate-800 text-xs">
+                  <table className="min-w-full divide-y divide-slate-200 text-xs dark:divide-slate-800">
                     <thead>
-                      <tr className="text-left text-[11px] uppercase tracking-wide text-slate-400">
+                      <tr className="text-left text-[11px] uppercase tracking-wide text-slate-600 dark:text-slate-400">
                         <th className="py-2">Rank</th>
                         <th className="py-2">Contestant</th>
                         <th className="py-2 text-center">Category Score</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800">
+                    <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                       {rows && rows.length > 0 ? (
                         rows.map((row) => {
                           const cls = highlightClassForRank(row.rank);
                           return (
                             <tr key={row.contestant_id} className={cls}>
-                              <td className="py-2 text-sm">{row.rank}</td>
-                              <td className="py-2">
+                              <td className="py-2 text-sm text-slate-900 dark:text-white">{row.rank}</td>
+                              <td className="py-2 text-slate-900 dark:text-white">
                                 #{row.number?.toString().padStart(2, '0')}{' '}
                                 {row.full_name}
                               </td>
-                              <td className="py-2 text-center">
+                              <td className="py-2 text-center text-slate-900 dark:text-white">
                                 {row.category_score?.toFixed(3)}
                               </td>
                             </tr>
@@ -212,7 +212,7 @@ export function RankingsPage() {
                         })
                       ) : (
                         <tr>
-                          <td className="py-2 text-xs" colSpan={3}>
+                          <td className="py-2 text-xs text-slate-600 dark:text-slate-400" colSpan={3}>
                             No records found.
                           </td>
                         </tr>

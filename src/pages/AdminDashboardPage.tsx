@@ -205,7 +205,7 @@ export function AdminDashboardPage() {
   if (!roleChecked) {
     return (
       <AppShell title="Admin Dashboard" showAdminLink={false}>
-        <p className="text-sm text-slate-400">Verifying access…</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400">Verifying access…</p>
       </AppShell>
     );
   }
@@ -213,7 +213,7 @@ export function AdminDashboardPage() {
   if (!isAdmin) {
     return (
       <AppShell title="Admin Dashboard" showAdminLink={false}>
-        <p className="text-sm text-rose-300">You are not authorized to view this page.</p>
+        <p className="text-sm text-rose-600 dark:text-rose-300">You are not authorized to view this page.</p>
       </AppShell>
     );
   }
@@ -239,8 +239,8 @@ export function AdminDashboardPage() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {summary.map((item) => (
             <Card key={item.label} className="p-5 text-center">
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">{item.label}</p>
-              <p className="mt-2 text-3xl font-semibold text-white">{item.value}</p>
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">{item.label}</p>
+              <p className="mt-2 text-3xl font-semibold text-slate-900 dark:text-white">{item.value}</p>
             </Card>
           ))}
         </div>
@@ -274,7 +274,7 @@ export function AdminDashboardPage() {
                         <Label>Assigned Number</Label>
                         <Input type="number" {...contestantForm.register('number', { valueAsNumber: true })} />
                         {contestantForm.formState.errors.number && (
-                          <p className="text-xs text-rose-300">
+                          <p className="text-xs text-rose-600 dark:text-rose-300">
                             {contestantForm.formState.errors.number.message}
                           </p>
                         )}
@@ -291,7 +291,7 @@ export function AdminDashboardPage() {
                           : 'Add Pair'}
                       </Button>
                       {atCapacity && (
-                        <p className="text-xs text-slate-400">
+                        <p className="text-xs text-slate-600 dark:text-slate-400">
                           Maximum of five per division reached. Remove a contestant first.
                         </p>
                       )}
@@ -307,7 +307,7 @@ export function AdminDashboardPage() {
                     <ScrollArea className="h-64">
                       <div className="space-y-3">
                         {schoolCount === 0 && (
-                          <p className="text-sm text-slate-400">No schools registered yet.</p>
+                          <p className="text-sm text-slate-600 dark:text-slate-400">No schools registered yet.</p>
                         )}
                         {Array.from(
                           new Map(
@@ -319,13 +319,13 @@ export function AdminDashboardPage() {
                         ).map(([number, name]) => (
                           <div
                             key={number}
-                            className="flex items-center justify-between rounded-2xl border border-white/5 px-3 py-2"
+                            className="flex items-center justify-between rounded-2xl border border-slate-200 px-3 py-2 dark:border-white/5"
                           >
                             <div>
-                              <p className="font-medium text-white">
+                              <p className="font-medium text-slate-900 dark:text-white">
                                 #{String(number).padStart(2, '0')}
                               </p>
-                              <p className="text-sm text-slate-400">{name}</p>
+                              <p className="text-sm text-slate-600 dark:text-slate-400">{name}</p>
                             </div>
                             <Badge>Registered</Badge>
                           </div>
@@ -359,7 +359,7 @@ export function AdminDashboardPage() {
                       <Label>Initial Password</Label>
                       <Input type="password" {...judgeForm.register('password')} />
                       {judgeForm.formState.errors.password && (
-                        <p className="text-xs text-rose-300">
+                        <p className="text-xs text-rose-600 dark:text-rose-300">
                           {judgeForm.formState.errors.password.message}
                         </p>
                       )}
@@ -398,16 +398,16 @@ export function AdminDashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <ScrollArea className="max-h-80">
-                    <table className="min-w-full divide-y divide-white/5 text-sm">
+                    <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-white/5">
                       <thead>
-                        <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
+                        <tr className="text-left text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400">
                           <th className="py-2">Name</th>
                           <th className="py-2">Email</th>
                           <th className="py-2">Division</th>
                           <th className="py-2 text-right">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-white/5">
+                      <tbody className="divide-y divide-slate-200 dark:divide-white/5">
                         {judgesQuery.data?.map((judgeRow) => {
                           const isEditing = editingJudgeId === judgeRow.id;
                           const currentValues =
@@ -420,7 +420,7 @@ export function AdminDashboardPage() {
                                 };
                           return (
                             <tr key={judgeRow.id}>
-                              <td className="py-3 text-white">
+                              <td className="py-3 text-slate-900 dark:text-white">
                                 {isEditing ? (
                                   <Input
                                     value={currentValues.full_name}
@@ -440,7 +440,7 @@ export function AdminDashboardPage() {
                                   judgeRow.full_name
                                 )}
                               </td>
-                              <td className="py-3 text-slate-400">
+                              <td className="py-3 text-slate-600 dark:text-slate-400">
                                 {isEditing ? (
                                   <Input
                                     value={currentValues.email}
@@ -545,7 +545,7 @@ export function AdminDashboardPage() {
                       </tbody>
                     </table>
                     {judgesQuery.data?.length === 0 && (
-                      <p className="mt-4 text-sm text-slate-400">No judges registered.</p>
+                      <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">No judges registered.</p>
                     )}
                   </ScrollArea>
                 </CardContent>
@@ -575,26 +575,26 @@ export function AdminDashboardPage() {
               </div>
               <Card className="p-5">
                 <ScrollArea className="max-h-[420px]">
-                  <table className="min-w-full divide-y divide-white/5 text-sm">
+                  <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-white/5">
                     <thead>
-                      <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
+                      <tr className="text-left text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400">
                         <th className="py-2">Rank</th>
                         <th className="py-2">Contestant</th>
                         <th className="py-2">Total score</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-slate-200 dark:divide-white/5">
                       {leaderboardQuery.data?.map((row) => (
                         <tr key={row.contestant_id}>
-                          <td className="py-3 text-white">{row.rank}</td>
-                          <td className="py-3">
+                          <td className="py-3 text-slate-900 dark:text-white">{row.rank}</td>
+                          <td className="py-3 text-slate-900 dark:text-white">
                             #{row.number?.toString().padStart(2, '0')} {row.full_name}
                           </td>
-                          <td className="py-3">{row.total_score?.toFixed(3)}</td>
+                          <td className="py-3 text-slate-900 dark:text-white">{row.total_score?.toFixed(3)}</td>
                         </tr>
                       )) ?? (
                         <tr>
-                          <td className="py-3 text-sm text-slate-400" colSpan={3}>
+                          <td className="py-3 text-sm text-slate-600 dark:text-slate-400" colSpan={3}>
                             No records found.
                           </td>
                         </tr>

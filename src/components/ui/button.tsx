@@ -4,16 +4,16 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ring-offset-slate-950',
+  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ring-offset-white dark:ring-offset-slate-950',
   {
     variants: {
       variant: {
         default:
-          'bg-slate-100 text-slate-900 hover:bg-slate-100/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90',
+          'bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-white/90',
         outline:
-          'border border-slate-800 bg-transparent hover:bg-slate-800/40 text-slate-50',
-        ghost: 'hover:bg-slate-800/40 text-slate-50',
-        destructive: 'bg-red-600 text-white hover:bg-red-700'
+          'border border-slate-300 bg-transparent hover:bg-slate-100 text-slate-900 dark:border-slate-800 dark:hover:bg-slate-800/40 dark:text-slate-50',
+        ghost: 'hover:bg-slate-100 text-slate-900 dark:hover:bg-slate-800/40 dark:text-slate-50',
+        destructive: 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700'
       },
       size: {
         default: 'h-9 px-4 py-2',

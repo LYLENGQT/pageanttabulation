@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
 import { supabaseAuth } from '../services/supabaseApi';
+import { getSupabaseClient } from '../lib/supabaseClient';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -18,6 +19,7 @@ const schema = z.object({
 export function JudgeLoginPage() {
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
+  const [isChecking, setIsChecking] = useState(true);
   const {
     register,
     handleSubmit,
@@ -25,6 +27,23 @@ export function JudgeLoginPage() {
   } = useForm<{ email: string; password: string }>({
     resolver: zodResolver(schema)
   });
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = getSupabaseClient();
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+      if (user) {
+        const role = await supabaseAuth.getCurrentRole();
+        navigate(role === 'admin' ? '/admin' : '/judge', { replace: true });
+      } else {
+        setIsChecking(false);
+      }
+    };
+    checkAuth();
+  }, [navigate]);
 
   const onSubmit = handleSubmit(async ({ email, password }) => {
     setMessage('');
@@ -37,8 +56,18 @@ export function JudgeLoginPage() {
     }
   });
 
+  if (isChecking) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+        <div className="text-center">
+          <p className="text-sm text-slate-600 dark:text-slate-400">Loading…</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-slate-50 via-white to-slate-100 px-4 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

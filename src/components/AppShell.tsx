@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from './ui/button';
+import { ThemeToggle } from './ThemeToggle';
 import { cn } from '../lib/utils';
 import { supabaseAuth } from '../services/supabaseApi';
 
@@ -41,14 +42,14 @@ export function AppShell({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
-      <header className="sticky top-0 z-30 border-b border-white/5 bg-slate-950/80 backdrop-blur-xl">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 text-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 dark:text-white">
+      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/80 backdrop-blur-xl dark:border-white/5 dark:bg-slate-950/80">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">
               Mr & Ms Teen
             </p>
-            <h1 className="text-xl font-semibold text-white">{title}</h1>
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">{title}</h1>
           </div>
           <div className="flex items-center gap-3">
             {filteredNav.map((item) => {
@@ -60,8 +61,8 @@ export function AppShell({
                     className={cn(
                       'rounded-2xl px-5',
                       isActive
-                        ? 'bg-white text-slate-900 hover:bg-white/90'
-                        : 'text-slate-300'
+                        ? 'bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-white/90'
+                        : 'text-slate-600 dark:text-slate-300'
                     )}
                   >
                     {item.label}
@@ -70,11 +71,12 @@ export function AppShell({
               );
             })}
             {actions}
+            <ThemeToggle />
             <Button
               variant="ghost"
               size="sm"
               onClick={handleLogout}
-              className="rounded-2xl text-slate-300 hover:text-white"
+              className="rounded-2xl text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
             >
               Logout
             </Button>
