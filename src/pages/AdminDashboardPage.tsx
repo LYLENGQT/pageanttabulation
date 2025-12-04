@@ -50,6 +50,11 @@ export function AdminDashboardPage() {
   const [divisionFilter, setDivisionFilter] = useState<Division>('male');
   const [activeTab, setActiveTab] = useState('contestants');
   const [editingJudgeId, setEditingJudgeId] = useState<string | null>(null);
+  const [editingValues, setEditingValues] = useState<{
+    full_name: string;
+    email: string;
+    division: Division;
+  } | null>(null);
   const [roleChecked, setRoleChecked] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -141,23 +146,37 @@ export function AdminDashboardPage() {
   const updateJudgeMutation = useMutation({
     mutationFn: async ({
       id,
-      ...values
-    }: z.infer<typeof judgeSchema> & { id: string }) => {
+      full_name,
+      email,
+      division
+    }: {
+      id: string;
+      full_name: string;
+      email: string;
+      division: Division;
+    }) => {
       await updateJudge(id, {
-        full_name: values.full_name,
-        email: values.email,
-        division: values.division
+        full_name,
+        email,
+        division
       });
     },
     onSuccess: () => {
       setEditingJudgeId(null);
+      setEditingValues(null);
       queryClient.invalidateQueries({ queryKey: ['judges'] });
     }
   });
 
   const deleteJudgeMutation = useMutation({
     mutationFn: async (id: string) => deleteJudge(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['judges'] })
+    onSuccess: () => {
+      if (editingJudgeId) {
+        setEditingJudgeId(null);
+        setEditingValues(null);
+      }
+      queryClient.invalidateQueries({ queryKey: ['judges'] });
+    }
   });
 
   const refreshMutation = useMutation({
