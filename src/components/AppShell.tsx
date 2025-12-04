@@ -1,7 +1,8 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from './ui/button';
 import { cn } from '../lib/utils';
+import { supabaseAuth } from '../services/supabaseApi';
 
 type Props = {
   title: string;
@@ -24,10 +25,20 @@ export function AppShell({
   showRankingsLink = true
 }: Props) {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const filteredNav = NAV_ITEMS.filter((item) =>
     item.label === 'Admin' ? showAdminLink : showRankingsLink
   );
+
+  const handleLogout = async () => {
+    try {
+      await supabaseAuth.signOut();
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
@@ -59,6 +70,14 @@ export function AppShell({
               );
             })}
             {actions}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleLogout}
+              className="rounded-2xl text-slate-300 hover:text-white"
+            >
+              Logout
+            </Button>
           </div>
         </div>
       </header>

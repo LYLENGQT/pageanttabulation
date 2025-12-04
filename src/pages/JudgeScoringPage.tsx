@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { AppShell } from '../components/AppShell';
@@ -15,7 +14,6 @@ import {
   fetchLocksForCategory,
   fetchScoresForJudgeCategory,
   lockSubmission,
-  supabaseAuth,
   upsertScores
 } from '../services/supabaseApi';
 import { useJudgeSession } from '../hooks/useJudgeSession';
@@ -25,7 +23,6 @@ import type { Category, Contestant, Criterion } from '../types/scoring';
 import { CATEGORY_CONFIG } from '../constants/scoring';
 
 export function JudgeScoringPage() {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const judge = useScoringStore((state) => state.judge);
   const setCategories = useScoringStore((state) => state.setCategories);
@@ -141,22 +138,12 @@ export function JudgeScoringPage() {
     setSheetValues(next);
   }, [scoresSheetQuery.data]);
 
-  const handleSignOut = async () => {
-    await supabaseAuth.signOut();
-    navigate('/login');
-  };
-
   const totalLocked = useMemo(() => locksQuery.data?.length ?? 0, [locksQuery.data]);
 
   return (
     <AppShell
       title="Judge Scoring Panel"
       showAdminLink={false}
-      actions={
-        <Button variant="outline" onClick={handleSignOut}>
-          Sign Out
-        </Button>
-      }
     >
       {judgeQuery.isLoading ? (
         <p className="text-sm text-slate-400">Loading judge profile…</p>
